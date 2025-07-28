@@ -124,14 +124,24 @@ def edit_lot(lot_id):
     return render_template('edit_lot.html', form=form, lot=lot)
 
 
-@app.route('/admin/lot/delete/<int:lot_id>', methods=['GET', 'POST'])
-@login_required
+@app.route("/delete_lot/<int:lot_id>")
 def delete_lot(lot_id):
     lot = ParkingLot.query.get_or_404(lot_id)
+
+    occupied_spots = ParkingSpot.query.filter_by(lot_id=lot.id, status='O').all()
+
+    if occupied_spots:
+        flash("Cannot delete this lot. Some spots are still occupied!", "danger")
+        return redirect(url_for("admin_dashboard"))
+
+    ParkingSpot.query.filter_by(lot_id=lot.id).delete()
+
     db.session.delete(lot)
     db.session.commit()
-    flash('Parking lot deleted successfully.', 'danger')
-    return redirect(url_for('admin_dashboard'))
+
+    flash("Parking lot and its spots deleted successfully.", "success")
+    return redirect(url_for("admin_dashboard"))
+
 
 @app.route('/admin/lot/<int:lot_id>/spots')
 @login_required
@@ -241,11 +251,9 @@ def release_spot(reservation_id):
 
     reservation.end_time = datetime.now()
 
-    # Calculate duration
     duration = reservation.end_time - reservation.start_time
     hours = round(duration.total_seconds() / 3600, 2)
 
-    # Get price per hour
     rate = reservation.spot.lot.price
     cost = round(hours * rate, 2)
     
