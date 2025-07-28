@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block remtitle %}
+Parking History
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">Your Parking History</h2>
+    {% if reservations %}
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Lot Name</th>
+                    <th>Spot ID</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Cost (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for res in reservations %}
+                <tr>
+                    <td>{{ res.spot.lot.name }}</td>
+                    <td>{{ res.spot.id }}</td>
+                    <td>{{ res.start_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>
+                        {% if res.end_time %}
+                            {{ res.end_time.strftime('%Y-%m-%d %H:%M') }}
+                        {% else %}
+                            <span class="text-danger">Active</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if res.cost %}
+                            ₹{{ '%.2f' % res.cost }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info">You have no parking history yet.</div>
+    {% endif %}
+</div>
+{% endblock %}

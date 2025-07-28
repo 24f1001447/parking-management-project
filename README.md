@@ -1,0 +1,1 @@
+A simple and user-friendly Flask web application that enables users to register, log in, and manage parking reservations with real-time spot availability and history tracking.

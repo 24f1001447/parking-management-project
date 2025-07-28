@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block title %}Book Spot{% endblock %}
+{% block content %}
+<h3>Book Parking Spot</h3>
+<form method="POST">
+  <div class="mb-3">
+    <label>Parking Lot</label>
+    <select name="lot_id" class="form-select" required>
+      {% for lot in lots %}
+      <option value="{{ lot.id }}">{{ lot.name }} (₹{{ lot.price }}/hr)</option>
+      {% endfor %}
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Book</button>
+</form>
+{% endblock %}

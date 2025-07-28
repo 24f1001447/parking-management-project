@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}Release Summary{% endblock %}
+{% block content %}
+<h3>Parking Summary</h3>
+<ul class="list-group">
+  <li class="list-group-item"><strong>Spot ID:</strong> {{ reservation.spot.id }}</li>
+  <li class="list-group-item"><strong>Parking Lot:</strong> {{ reservation.spot.lot.name }}</li>
+  <li class="list-group-item"><strong>Start Time:</strong> {{ reservation.start_time }}</li>
+  <li class="list-group-item"><strong>End Time:</strong> {{ reservation.end_time }}</li>
+  <li class="list-group-item"><strong>Price per Hour:</strong> ₹{{ reservation.spot.lot.price }}</li>
+  <li class="list-group-item"><strong>Duration:</strong> {{ hours }} hours</li>
+  <li class="list-group-item"><strong>Total Cost:</strong> ₹{{ reservation.cost }}</li>
+</ul>
+<a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+{% endblock %}

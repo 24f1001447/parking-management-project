@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Edit Parking Lot
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">Edit Parking Lot</h2>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+      {{ form.name.label(class="form-label") }}
+      {{ form.name(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.address.label(class="form-label") }}
+      {{ form.address(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.pin.label(class="form-label") }}
+      {{ form.pin(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.price.label(class="form-label") }}
+      {{ form.price(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.max_spots.label(class="form-label") }}
+      {{ form.max_spots(class="form-control") }}
+    </div>
+
+    <div class="mt-4">
+      {{ form.submit(class="btn btn-primary") }}
+      <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary ms-2">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
+

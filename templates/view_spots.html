@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Spots in {{ lot.name }}</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Spot ID</th>
+            <th>Status</th>
+            <th>Action</th>
+            <th>User Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for spot in spots %}
+        <tr>
+            <td>{{ spot.id }}</td>
+            <td>{{ 'Occupied' if spot.status == 'O' else 'Available' }}</td>
+            <td>
+                {% if spot.status == 'A' %}
+                    <form action="{{ url_for('delete_spot', lot_id=lot.id, spot_id=spot.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this spot?');">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                {% else %}
+                
+                    -
+                {% endif %}
+            </td>
+            <td>
+                {% set active_reservation = active_reservations[spot.id] %}
+                {% if active_reservation %}
+                    Username: {{ active_reservation.user.username }}<br>
+                    Start: {{ active_reservation.start_time.strftime('%Y-%m-%d %H:%M:%S') }}<br>
+                    End: In Progress
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a class="btn btn-secondary" href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+{% endblock %}
+
+

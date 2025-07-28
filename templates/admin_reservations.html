@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block title %}All Reservations - Admin View{% endblock %}
+
+{% block content %}
+  <h2>All Parking Reservations</h2>
+
+  {% if reservations %}
+    <table class="table table-bordered table-hover mt-4">
+      <thead class="table-dark">
+        <tr>
+          <th>User</th>
+          <th>Lot</th>
+          <th>Spot</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Duration (hrs)</th>
+          <th>Total Cost (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in reservations %}
+          <tr>
+            <td>{{ r.user.username }}</td>
+            <td>{{ r.spot.lot.name }}</td>
+            <td>{{ r.spot.id }}</td>
+            <td>{{ r.start_time.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>
+              {% if r.end_time %}
+                {{ r.end_time.strftime('%Y-%m-%d %H:%M') }}
+              {% else %}
+                <span class="text-danger">Active</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if r.end_time %}
+                {{ ((r.end_time - r.start_time).total_seconds() / 3600) | round(2) }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td>
+              {% if r.cost %}
+                ₹{{ r.cost }}
+              {% else %}
+                ₹0.00
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="text-muted">No reservation data available.</p>
+  {% endif %}
+{% endblock %}
